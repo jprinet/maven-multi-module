@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>test-multi-module</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>lib</module>
+        <module>lib2</module>
+        <module>app</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <timestamp>${maven.build.timestamp}</timestamp>
+    </properties>
+
+    <build>
+        <finalName>${project.artifactId}-${project.version}-${timestamp}</finalName>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <proc>none</proc>
+                        <source>11</source>
+                        <target>11</target>
+                        <encoding>UTF-8</encoding>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.example</groupId>
+                                <artifactId>lib</artifactId>
+                                <version>1.0-SNAPSHOT</version>
+                            </path>
+                        </annotationProcessorPaths>
+                        <annotationProcessors>
+                            <annotationProcessor>
+                                com.gradle.sample.BuilderProcessor
+                            </annotationProcessor>
+                        </annotationProcessors>
+                    </configuration>
+                </plugin>
+            </plugins>
+
+        </pluginManagement>
+    </build>
+</project>
