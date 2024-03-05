@@ -144,22 +144,6 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>com.gradle.sample</groupId>
-                <artifactId>fake-maven-plugin</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>fake-plugin</goal>
-                        </goals>
-                    </execution>
-                </executions>
-<!--                <configuration>-->
-<!--                    <scope>test</scope>-->
-<!--                </configuration>-->
-            </plugin>
-
         </plugins>
 
         <pluginManagement>
