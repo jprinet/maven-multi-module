@@ -18,13 +18,164 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <timestamp>${maven.build.timestamp}</timestamp>
+        <foo>${env.FOO}</foo>
+<!--        <gradle.cache.requireClean>false</gradle.cache.requireClean>-->
     </properties>
 
+    <profiles>
+    <profile>
+        <id>quick-build</id>
+        <activation>
+            <property>
+                <name>quickly</name>
+            </property>
+        </activation>
+        <properties>
+            <skipTests>true</skipTests>
+            <skipITs>true</skipITs>
+            <enforcer.skip>true</enforcer.skip>
+        </properties>
+        <build>
+            <defaultGoal>clean install</defaultGoal>
+        </build>
+    </profile>
+    </profiles>
+
     <build>
-        <finalName>${project.artifactId}-${project.version}-${timestamp}</finalName>
+<!--        <finalName>${project.artifactId}-${project.version}-${timestamp}</finalName>-->
+
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.11</version>
+                <configuration>
+                    <output>file</output>
+                    <append>true</append>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jacoco-initialize</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.1.0</version>
+
+                <executions>
+                    <!-- Split the slow enforcer rules into their own execution. All fast rules can be in a single, uncached execution. -->
+                    <execution>
+                        <id>enforce-default</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>1.8</version>
+                                </requireJavaVersion>
+                            </rules>
+                            <rules>
+                                <bannedRepositories>
+                                    <bannedRepositories>
+                                        <bannedRepository>http://repo1/*</bannedRepository>
+                                    </bannedRepositories>
+                                </bannedRepositories>
+                                <banDistributionManagement/>
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>enforce-banned-dependencies</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <bannedDependencies>
+                                    <message>Testing framework libraries should have test scope</message>
+                                    <searchTransitive>false</searchTransitive>
+                                    <excludes>
+                                        <exclude>junit:junit:*:jar:*</exclude>
+                                        <exclude>xmlunit:xmlunit:*:jar:*</exclude>
+                                        <!--                                        <exclude>*:*:*:jar:*:tests</exclude>-->
+                                    </excludes>
+                                    <includes>
+                                        <include>junit:junit:*:jar:test</include>
+                                        <include>xmlunit:xmlunit:*:jar:test</include>
+                                        <!--                                        <include>*:*:*:jar:test:tests</include>-->
+                                    </includes>
+                                </bannedDependencies>
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>enforce-bytecode-version</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <enforceBytecodeVersion>
+                                    <maxJdkVersion>11</maxJdkVersion>
+                                </enforceBytecodeVersion>
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>extra-enforcer-rules</artifactId>
+                        <version>1.6.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+<!--                    <systemPropertyVariables>-->
+<!--                        <debugForkedProcess>-javaagent:/opt/buildAgent/tools/jacoco.0.8.11/jacocoagent.jar=append=true,destfile=/opt/buildAgent/temp/buildTmp/JACOCO7948386344573348721coverage/jacoco.exec</debugForkedProcess>-->
+<!--                    </systemPropertyVariables>-->
+<!--                    <debugForkedProcess>-javaagent:/opt/buildAgent/tools/jacoco.0.8.11/jacocoagent.jar=append=true,destfile=/opt/buildAgent/temp/buildTmp/JACOCO7948386344573348721coverage/jacoco.exec</debugForkedProcess>-->
+<!--                    <debugForkedProcess>${env.DEBUG_SUREFIRE}</debugForkedProcess>-->
+<!--                    <argLine>${env.DEBUG_SUREFIRE}</argLine>-->
+<!--                    <additionalClasspathElements>-->
+<!--                        <additionalClasspathElement>${project.basedir}/target/foo/lib2-1.0-SNAPSHOT.zip</additionalClasspathElement>-->
+<!--                    </additionalClasspathElements>-->
+<!--                    <properties>-->
+<!--                        <distribution>-->
+<!--                            <enabled>true</enabled>-->
+<!--                        </distribution>-->
+<!--                    </properties>-->
+                </configuration>
+            </plugin>
+        </plugins>
 
         <pluginManagement>
             <plugins>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -33,20 +184,129 @@
                         <source>11</source>
                         <target>11</target>
                         <encoding>UTF-8</encoding>
-                        <annotationProcessorPaths>
-                            <path>
-                                <groupId>org.example</groupId>
-                                <artifactId>lib</artifactId>
-                                <version>1.0-SNAPSHOT</version>
-                            </path>
-                        </annotationProcessorPaths>
-                        <annotationProcessors>
-                            <annotationProcessor>
-                                com.gradle.sample.BuilderProcessor
-                            </annotationProcessor>
-                        </annotationProcessors>
+<!--                        <annotationProcessorPaths>-->
+<!--                            <path>-->
+<!--                                <groupId>org.example</groupId>-->
+<!--                                <artifactId>lib</artifactId>-->
+<!--                                <version>1.0-SNAPSHOT</version>-->
+<!--                            </path>-->
+<!--                        </annotationProcessorPaths>-->
+<!--                        <annotationProcessors>-->
+<!--                            <annotationProcessor>-->
+<!--                                com.gradle.sample.BuilderProcessor-->
+<!--                            </annotationProcessor>-->
+<!--                        </annotationProcessors>-->
                     </configuration>
                 </plugin>
+
+                <plugin>
+                    <groupId>com.gradle</groupId>
+                    <artifactId>gradle-enterprise-maven-extension</artifactId>
+                    <configuration>
+                        <gradleEnterprise>
+                            <normalization>
+                                <systemProperties>
+                                    <ignoredKeys>
+                                        <ignore>maven.surefire.debug</ignore>
+                                    </ignoredKeys>
+                                </systemProperties>
+                                <runtimeClassPath>
+                                    <metaInf>
+                                        <ignoredAttributes>
+                                            <ignore>Build-Time</ignore>
+                                        </ignoredAttributes>
+                                    </metaInf>
+                                    <ignoredFiles>
+<!--                                        <ignoredFile>**/lib2-1.0-SNAPSHOT.jar</ignoredFile>-->
+<!--                                        <ignoredFile>**/MANIFEST.MF</ignoredFile>-->
+<!--                                        <ignoredFile>**/foo-*.txt</ignoredFile>-->
+<!--                                        <ignoredFile>**/bar-*.txt</ignoredFile>-->
+<!--                                        <ignoredFile>target/script-work/nested1/nested2/nested3/foo-*.unknown</ignoredFile>-->
+<!--                                        <ignoredFile>target/script-work/nested1/bar-*.txt</ignoredFile>-->
+                                    </ignoredFiles>
+                                </runtimeClassPath>
+                            </normalization>
+                            <plugins>
+
+<!--                                <plugin>-->
+<!--                                    <artifactId>maven-surefire-plugin</artifactId>-->
+<!--                                    <executions>-->
+<!--                                        <execution>-->
+<!--                                            <goal>test</goal>-->
+<!--                                            <id>enforce-banned-dependencies</id>-->
+<!--                                            <inputs>-->
+<!--                                                <fileSets>-->
+<!--                                                    <fileSet>-->
+<!--                                                        <name>original</name>-->
+<!--                                                        <paths>-->
+<!--                                                            <path>${project.basedir}/target/foo</path>-->
+<!--                                                        </paths>-->
+<!--                                                        <normalization>CLASSPATH</normalization>-->
+<!--                                                    </fileSet>-->
+<!--                                                </fileSets>-->
+<!--                                            </inputs>-->
+<!--                                        </execution>-->
+<!--                                    </executions>-->
+<!--                                </plugin>-->
+
+                <!--                                <plugin>-->
+<!--                                    <artifactId>maven-surefire-plugin</artifactId>-->
+<!--                                    <inputs>-->
+<!--                                        <ignoredProperties>-->
+<!--                                            <ignore>debugForkedProcess</ignore>-->
+<!--                                        </ignoredProperties>-->
+<!--                                        <properties>-->
+<!--                                            <property>-->
+<!--                                                <name>maven.surefire.debug</name>-->
+<!--                                                <value>false</value>-->
+<!--                                            </property>-->
+<!--                                            <property>-->
+<!--                                                <name>debugForkedProcess</name>-->
+<!--                                                <value>ignored</value>-->
+<!--                                            </property>-->
+<!--                                        </properties>-->
+<!--                                    </inputs>-->
+<!--                                </plugin>-->
+<!--                                <plugin>-->
+<!--                                    <groupId>com.gradle.sample</groupId>-->
+<!--                                    <artifactId>fake-maven-plugin</artifactId>-->
+<!--                                    <executions>-->
+<!--                                        <execution>-->
+<!--                                            <id>default</id>-->
+<!--                                            <inputs>-->
+<!--                                                <fileSets>-->
+<!--                                                    <fileSet>-->
+<!--                                                        <name>sources</name>-->
+<!--                                                        <paths>-->
+<!--                                                            <path>.</path>-->
+<!--                                                        </paths>-->
+<!--                                                        <excludes>-->
+<!--                                                            <exclude>target/**</exclude>-->
+<!--                                                        </excludes>-->
+<!--                                                        <normalization>RELATIVE_PATH</normalization>-->
+<!--                                                    </fileSet>-->
+<!--                                                </fileSets>-->
+<!--                                                <ignoredProperties>-->
+<!--                                                    <ignored>project</ignored>-->
+<!--                                                </ignoredProperties>-->
+<!--                                            </inputs>-->
+<!--                                            <outputs>-->
+<!--                                                <files>-->
+<!--                                                    <file>-->
+<!--                                                        <name>report</name>-->
+<!--                                                        <path>${project.build.directory}/report.adoc</path>-->
+<!--                                                    </file>-->
+<!--                                                </files>-->
+<!--                                                <cacheableBecause>generates consistent outputs for declared inputs</cacheableBecause>-->
+<!--                                            </outputs>-->
+<!--                                        </execution>-->
+<!--                                    </executions>-->
+<!--                                </plugin>-->
+                            </plugins>
+                        </gradleEnterprise>
+                    </configuration>
+                </plugin>
+
             </plugins>
 
         </pluginManagement>

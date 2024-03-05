@@ -29,8 +29,89 @@
         </dependency>
     </dependencies>
 
+
     <build>
+
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                <execution>
+                    <id>Source generation</id>
+                    <phase>generate-sources</phase>
+                    <goals>
+                        <goal>exec</goal>
+                    </goals>
+                    <configuration>
+                        <workingDirectory>${basedir}/</workingDirectory>
+                        <executable>bash</executable>
+                        <arguments>
+                            <argument>create-file.sh</argument>
+                        </arguments>
+                    </configuration>
+                </execution>
+                </executions>
+            </plugin>
+
+<!--            <plugin>-->
+<!--                <groupId>com.coderplus.maven.plugins</groupId>-->
+<!--                <artifactId>copy-rename-maven-plugin</artifactId>-->
+<!--                <version>1.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>rename-file</id>-->
+<!--                        <phase>generate-sources</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>rename</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <sourceFile>${project.basedir}/../lib2/target/lib2-1.0-SNAPSHOT.jar</sourceFile>-->
+<!--                            <destinationFile>${project.build.directory}/foo/lib2-1.0-SNAPSHOT.zip</destinationFile>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-antrun-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>rename-file</id>-->
+<!--                        <phase>generate-sources</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>run</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <tasks>-->
+<!--                                <copy file="${project.basedir}/../lib2/target/lib2-1.0-SNAPSHOT.jar" todir="${project.build.directory}/foo/lib2-1.0-SNAPSHOT.zip" />-->
+<!--                            </tasks>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-antrun-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>rename-file</id>-->
+<!--                        <phase>generate-sources</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>run</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <tasks>-->
+<!--                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}.original" todir="${project.build.directory}/original-archive/${project.artifactId}-${project.version}.original.jar" />-->
+<!--                            </tasks>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -38,31 +119,75 @@
                     <source>11</source>
                     <target>11</target>
                     <encoding>UTF-8</encoding>
-                    <annotationProcessorPaths>
-                        <annotationProcessorPath>
-                            <groupId>org.example</groupId>
-                            <artifactId>lib</artifactId>
-                            <version>1.0-SNAPSHOT</version>
-                        </annotationProcessorPath>
-                        <processorPath>
-                            <groupId>org.example</groupId>
-                            <artifactId>lib</artifactId>
-                            <version>1.0-SNAPSHOT</version>
-                        </processorPath>
-                        <path>
-                            <groupId>org.example</groupId>
-                            <artifactId>lib</artifactId>
-                            <version>1.0-SNAPSHOT</version>
-                        </path>
-                    </annotationProcessorPaths>
-                    <annotationProcessors>
-                        <annotationProcessor>
-                            com.gradle.sample.BuilderProcessor
-                        </annotationProcessor>
-                    </annotationProcessors>
+<!--                    <annotationProcessorPaths>-->
+<!--                        <annotationProcessorPath>-->
+<!--                            <groupId>org.example</groupId>-->
+<!--                            <artifactId>lib</artifactId>-->
+<!--                            <version>1.0-SNAPSHOT</version>-->
+<!--                        </annotationProcessorPath>-->
+<!--                        <processorPath>-->
+<!--                            <groupId>org.example</groupId>-->
+<!--                            <artifactId>lib</artifactId>-->
+<!--                            <version>1.0-SNAPSHOT</version>-->
+<!--                        </processorPath>-->
+<!--                        <path>-->
+<!--                            <groupId>org.example</groupId>-->
+<!--                            <artifactId>lib</artifactId>-->
+<!--                            <version>1.0-SNAPSHOT</version>-->
+<!--                        </path>-->
+<!--                    </annotationProcessorPaths>-->
+<!--                    <annotationProcessors>-->
+<!--                        <annotationProcessor>-->
+<!--                            com.gradle.sample.BuilderProcessor-->
+<!--                        </annotationProcessor>-->
+<!--                    </annotationProcessors>-->
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>com.gradle.sample</groupId>
+                <artifactId>fake-maven-plugin</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>fake-plugin</goal>
+                        </goals>
+                    </execution>
+                </executions>
+<!--                <configuration>-->
+<!--                    <scope>test</scope>-->
+<!--                </configuration>-->
+            </plugin>
+
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <configuration>
+                        <archive>
+                            <index>true</index>
+                            <manifest>
+                                <addDefaultSpecificationEntries>
+                                    true
+                                </addDefaultSpecificationEntries>
+                                <addDefaultImplementationEntries>
+                                    true
+                                </addDefaultImplementationEntries>
+                            </manifest>
+                            <manifestEntries combine.children="append">
+                                <foo>${maven.build.timestamp}</foo>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+
+        </pluginManagement>
     </build>
 
 </project>
