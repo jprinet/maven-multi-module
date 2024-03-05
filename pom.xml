@@ -227,17 +227,17 @@
                                 </runtimeClassPath>
                             </normalization>
                             <plugins>
-                                <plugin>
-                                    <artifactId>maven-surefire-plugin</artifactId>
-                                    <inputs>
-                                        <properties>
-                                            <property>
-                                                <name>debugForkedProcess</name>
-                                                <value>foo</value>
-                                            </property>
-                                        </properties>
-                                    </inputs>
-                                </plugin>
+<!--                                <plugin>-->
+<!--                                    <artifactId>maven-surefire-plugin</artifactId>-->
+<!--                                    <inputs>-->
+<!--                                        <properties>-->
+<!--                                            <property>-->
+<!--                                                <name>debugForkedProcess</name>-->
+<!--                                                <value>foo</value>-->
+<!--                                            </property>-->
+<!--                                        </properties>-->
+<!--                                    </inputs>-->
+<!--                                </plugin>-->
 <!--                                <plugin>-->
 <!--                                    <artifactId>maven-surefire-plugin</artifactId>-->
 <!--                                    <executions>-->
