@@ -155,7 +155,7 @@
                 <version>2.22.2</version>
                 <configuration>
 <!--                    <argLine>-Xmx2048m -XX:MaxPermSize=256m</argLine>-->
-<!--                    <argLine>@{argLine} -Xmx2048m -XX:MaxPermSize=256m</argLine>-->
+                    <argLine>@{argLine} -Dfile.encoding=UTF-8</argLine>
 <!--                    <systemPropertyVariables>-->
 <!--                        <debugForkedProcess>-javaagent:/opt/buildAgent/tools/jacoco.0.8.11/jacocoagent.jar=append=true,destfile=/opt/buildAgent/temp/buildTmp/JACOCO7948386344573348721coverage/jacoco.exec</debugForkedProcess>-->
 <!--                    </systemPropertyVariables>-->
