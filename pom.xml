@@ -47,29 +47,29 @@
 
         <plugins>
 
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.11</version>
-                <configuration>
-                    <output>file</output>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>jacoco-initialize</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>jacoco-site</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.jacoco</groupId>-->
+<!--                <artifactId>jacoco-maven-plugin</artifactId>-->
+<!--                <version>0.8.11</version>-->
+<!--                <configuration>-->
+<!--                    <output>file</output>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>jacoco-initialize</id>-->
+<!--                        <goals>-->
+<!--                            <goal>prepare-agent</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>jacoco-site</id>-->
+<!--                        <phase>verify</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>report</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -155,7 +155,7 @@
                 <version>2.22.2</version>
                 <configuration>
 <!--                    <argLine>-Xmx2048m -XX:MaxPermSize=256m</argLine>-->
-                    <argLine>@{argLine} -Dfile.encoding=UTF-8</argLine>
+<!--                    <argLine>@{argLine} -Dfile.encoding=UTF-8</argLine>-->
 <!--                    <systemPropertyVariables>-->
 <!--                        <debugForkedProcess>-javaagent:/opt/buildAgent/tools/jacoco.0.8.11/jacocoagent.jar=append=true,destfile=/opt/buildAgent/temp/buildTmp/JACOCO7948386344573348721coverage/jacoco.exec</debugForkedProcess>-->
 <!--                    </systemPropertyVariables>-->
@@ -206,11 +206,11 @@
                     <configuration>
                         <gradleEnterprise>
                             <normalization>
-                                <systemProperties>
-                                    <ignoredKeys>
-                                        <ignore>maven.surefire.debug</ignore>
-                                    </ignoredKeys>
-                                </systemProperties>
+<!--                                <systemProperties>-->
+<!--                                    <ignoredKeys>-->
+<!--                                        <ignore>maven.surefire.debug</ignore>-->
+<!--                                    </ignoredKeys>-->
+<!--                                </systemProperties>-->
                                 <runtimeClassPath>
                                     <metaInf>
                                         <ignoredAttributes>
