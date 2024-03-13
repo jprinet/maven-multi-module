@@ -23,8 +23,8 @@
 <extensions>
     <extension>
         <groupId>com.gradle</groupId>
-        <artifactId>develocity-maven-extension</artifactId>
-        <version>1.20.1</version>
+        <artifactId>gradle-enterprise-maven-extension</artifactId>
+        <version>1.20-rc-2</version>
     </extension>
 <!--  <extension>-->
 <!--    <groupId>com.gradle</groupId>-->
