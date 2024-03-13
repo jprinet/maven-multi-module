@@ -21,16 +21,16 @@
 -->
 
 <extensions>
-    <extension>
-        <groupId>com.gradle</groupId>
-        <artifactId>gradle-enterprise-maven-extension</artifactId>
-        <version>1.20-rc-2</version>
-    </extension>
-<!--  <extension>-->
-<!--    <groupId>com.gradle</groupId>-->
-<!--    <artifactId>develocity-maven-extension</artifactId>-->
-<!--      <version>1.21-rc-1</version>-->
-<!--  </extension>-->
+<!--    <extension>-->
+<!--        <groupId>com.gradle</groupId>-->
+<!--        <artifactId>gradle-enterprise-maven-extension</artifactId>-->
+<!--        <version>1.20-rc-2</version>-->
+<!--    </extension>-->
+  <extension>
+    <groupId>com.gradle</groupId>
+    <artifactId>develocity-maven-extension</artifactId>
+      <version>1.21-rc-5</version>
+  </extension>
 <!--  <extension>-->
 <!--    <groupId>com.gradle</groupId>-->
 <!--    <artifactId>common-custom-user-data-maven-extension</artifactId>-->
